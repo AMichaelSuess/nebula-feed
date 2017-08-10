@@ -1,2 +1,2 @@
 # nebula-feed
-A react / bootstrap / node / express-playground project
+A react / bootstrap / node / express / mongodb-playground project

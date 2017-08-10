@@ -1,0 +1,4 @@
+# we don't want to put all our node dependencies under source control
+node_modules
+# this will be for the react stuff.
+client/build

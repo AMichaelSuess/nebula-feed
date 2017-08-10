@@ -19,3 +19,23 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+Credits
+
+This application uses Open Source components. You can find the source code of
+their open source projects along with license information below. We acknowledge
+and are grateful to these developers for their contributions to open source.
+
+Project: mars/heroku-cra-node https://github.com/mars/heroku-cra-node
+Copyright (c) 2016 Mars Hall
+License MIT https://github.com/mars/heroku-cra-node/blob/master/LICENSE
+
+Project: sahat/newedenfaces-react https://github.com/sahat/newedenfaces-react
+Copyright (c) 2015 Sahat Yalkabov
+License MIT https://github.com/sahat/newedenfaces-react/blob/master/LICENSE
+
+Project: fullstackreact/food-lookup-demo https://github.com/fullstackreact/food-lookup-demo
+Copyright (c) 2017 Anthony Accomazzo
+License Unknown :-( - opened an issue for it with the author.
+TODO: remove start-client.js if this does not clear up).

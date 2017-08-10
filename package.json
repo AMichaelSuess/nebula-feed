@@ -1,0 +1,28 @@
+{
+  "name": "nebula-feed",
+  "version": "0.1.0",
+  "description": "A react / bootstrap / node / express-playground project",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node server/server.js",
+    "client": "node start-client.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AMichaelSuess/nebula-feed.git"
+  },
+  "author": "Michael Suess",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AMichaelSuess/nebula-feed/issues"
+  },
+  "homepage": "https://github.com/AMichaelSuess/nebula-feed#readme",
+  "dependencies": {
+    "express": "^4.15.4"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0"
+  }
+}

@@ -1,0 +1,7 @@
+body {
+    background-color: #f0f3f4;
+}
+
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
