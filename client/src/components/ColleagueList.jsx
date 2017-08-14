@@ -2,15 +2,33 @@ import React, {Component} from 'react';
 import { Table, Button } from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 import './../styles/ColleagueList.css'
-import { colleaguesConfig, pictureURLConfig } from './../config.json';
+import { pictureURLConfig } from './../config.json';
 
 class ColleagueList extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      colleagues: colleaguesConfig
+      colleagues: []
     }
+  }
+
+  componentDidMount() {
+    this.fetchColleagues();
+  }
+
+  // load a list of all colleagues from '/api/colleagues'
+  fetchColleagues () {
+    var _this = this;
+    fetch('api/colleagues')
+    .then((resp) => resp.json())
+    .then(function(data) {
+      _this.setState({ colleagues: data });
+    })
+    .catch(function(error) {
+      // TODO: real error logging
+      console.log(error);
+    });
   }
 
   onResetClick(index) {

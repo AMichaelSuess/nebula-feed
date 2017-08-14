@@ -2,3 +2,5 @@
 node_modules
 # this will be for the react stuff.
 client/build
+# npm debug logs - not for the server
+npm-debug.log*
