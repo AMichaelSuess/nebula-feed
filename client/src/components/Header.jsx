@@ -23,7 +23,11 @@ class Header extends Component {
           </Nav>
           <Nav pullRight>
             <NavItem eventKey={3} href="#">
-              <Button bsStyle="success">Submit</Button>
+              <Button
+                bsStyle="success"
+                onClick={() => this.props.onSubmitClick()}>
+                Submit
+              </Button>
             </NavItem>
           </Nav>
         </Navbar.Collapse>

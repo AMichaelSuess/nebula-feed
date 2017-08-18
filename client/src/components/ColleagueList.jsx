@@ -6,47 +6,8 @@ import { pictureURLConfig } from './../config.json';
 
 class ColleagueList extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      colleagues: []
-    }
-  }
-
-  componentDidMount() {
-    this.fetchColleagues();
-  }
-
-  // load a list of all colleagues from '/api/colleagues'
-  fetchColleagues () {
-    var _this = this;
-    fetch('api/colleagues')
-    .then((resp) => resp.json())
-    .then(function(data) {
-      _this.setState({ colleagues: data });
-    })
-    .catch(function(error) {
-      // TODO: real error logging
-      console.log(error);
-    });
-  }
-
-  onResetClick(index) {
-    let colleagues = this.state.colleagues;
-
-    colleagues[index].rating = 0;
-    this.setState({ colleagues: colleagues });
-  }
-
-  onStarClick(nextValue, index) {
-    let colleagues = this.state.colleagues;
-
-    colleagues[index].rating = nextValue;
-    this.setState({ colleagues: colleagues });
-  }
-
   render() {
-    let charactersList = this.state.colleagues.map((colleague, index) => {
+    let charactersList = this.props.colleagues.map((colleague, index) => {
       return (
         <tr key={colleague.userId}>
           <td>
@@ -61,12 +22,12 @@ class ColleagueList extends Component {
                 name={`rate-${colleague.userId}`}
                 starCount={5}
                 value={colleague.rating}
-                onStarClick={(nextValue, prevValue, name) => this.onStarClick(nextValue, index)}
+                onStarClick={(nextValue, prevValue, name) => this.props.onStarClick(nextValue, index)}
               />
             </div>
           </td>
           <td>
-            <Button bsStyle="warning" bsSize="small" onClick={() => this.onResetClick(index)}>Reset</Button>
+            <Button bsStyle="warning" bsSize="small" onClick={() => this.props.onResetClick(index)}>Reset</Button>
           </td>
         </tr>
       );
