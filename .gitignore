@@ -4,3 +4,5 @@ node_modules
 client/build
 # npm debug logs - not for the server
 npm-debug.log*
+# webstorm files
+.idea
