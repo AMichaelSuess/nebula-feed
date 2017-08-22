@@ -20,7 +20,8 @@
   },
   "homepage": "https://github.com/AMichaelSuess/nebula-feed#readme",
   "dependencies": {
-    "express": "^4.15.4"
+    "express": "^4.15.4",
+    "react-scripts": "1.0.11"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
