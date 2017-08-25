@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Header from './components/Header.jsx'
 import ColleagueList from './components/ColleagueList.jsx'
 import './styles/App.css';
@@ -20,43 +20,66 @@ class App extends Component {
   }
 
   // load a list of all colleagues from '/api/colleagues'
-  fetchColleagues () {
+  fetchColleagues() {
     var _this = this;
     fetch('api/colleagues')
-    .then((resp) => resp.json())
-    .then(function(data) {
-      _this.setState({ colleagues: data });
-    })
-    .catch(function(error) {
-      // TODO: real error logging
-      console.log(error);
-    });
+      .then((resp) => resp.json())
+      .then(function (data) {
+        _this.setState({colleagues: data});
+      })
+      .catch(function (error) {
+        // TODO: real error logging
+        console.log(error);
+      });
   }
 
   onSubmitClick() {
+    var reqArr = [];
+
     this.state.colleagues.forEach((colleague, index) => {
-      this.onResetClick(index);
+      // only need to do something for the ones who have scores
+      if (colleague.score > 0 && colleague.score < 6) {
+        console.log(`${JSON.stringify(colleague)}`);
+
+        let aRating = {
+          fromColleagueId: "1234",
+          msg: "From Client!",
+          toColleagueId: colleague.colleagueId,
+          score: colleague.score
+        }
+        reqArr.push(aRating);
+        this.onResetClick(index);
+      }
+    });
+
+    fetch('api/ratings/bulkInsert', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reqArr)
     });
   }
 
   onResetClick(index) {
     let colleagues = this.state.colleagues;
 
-    colleagues[index].rating = 0;
-    this.setState({ colleagues: colleagues });
+    colleagues[index].score = 0;
+    this.setState({colleagues: colleagues});
   }
 
   onStarClick(nextValue, index) {
     let colleagues = this.state.colleagues;
 
-    colleagues[index].rating = nextValue;
-    this.setState({ colleagues: colleagues });
+    colleagues[index].score = nextValue;
+    this.setState({colleagues: colleagues});
   }
 
   render() {
     return (
       <div className="App">
-        <Header onSubmitClick={this.onSubmitClick} />
+        <Header onSubmitClick={this.onSubmitClick}/>
         <ColleagueList
           onResetClick={this.onResetClick}
           onStarClick={this.onStarClick}

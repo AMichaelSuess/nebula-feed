@@ -1,3 +1,9 @@
+// There are a lot of things to do in this module:
+// - check proper HTTP-response codes and responses
+// - security and preventing all kinds of attacks against the api
+// - error handling
+// - logging
+
 const express = require('express');
 const path = require('path');
 
@@ -27,12 +33,33 @@ mongoClient.connect(mongoUrl, function(err, database) {
 // Return a list of colleagues
 app.get('/api/colleagues', function (req, res) {
   res.set('Content-Type', 'application/json');
-  console.log (`Request to serve resource ${req.url}`);
+  console.log (`GET: ${req.url}`);
 
   // find all rows in colleagues collection and return the "public" fields
   db.collection('colleagues').find({}, { _id: false, __v:false })
   .toArray(function(err, result) {
     res.send(result);
+  });
+});
+
+// create many new rating entries
+app.post('/api/ratings/bulkInsert', function (req, res) {
+  req.addListener('data', function(message)
+  {
+    let command = JSON.parse(message);
+    console.log (`POST: ${JSON.stringify(command)}`);
+
+    command.forEach((rating, index) => {
+      let document = {
+        fromColleagueId: rating.fromColleagueId,
+        msg: rating.msg,
+        toColleagueId: rating.toColleagueId,
+        score: rating.score
+      }
+      db.collection('ratings').insert(document);
+    });
+
+    res.status("201").location("/api/ratings/:123").send("Created!");
   });
 });
 

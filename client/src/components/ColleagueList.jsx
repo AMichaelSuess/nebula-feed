@@ -21,7 +21,7 @@ class ColleagueList extends Component {
               <StarRatingComponent
                 name={`rate-${colleague.userId}`}
                 starCount={5}
-                value={colleague.rating}
+                value={colleague.score}
                 onStarClick={(nextValue, prevValue, name) => this.props.onStarClick(nextValue, index)}
               />
             </div>
