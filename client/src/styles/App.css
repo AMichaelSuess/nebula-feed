@@ -17,3 +17,8 @@
 .App-intro {
   font-size: large;
 }
+
+body {
+    /* needed for content to not overlap with footer */
+    padding-bottom: 50px;
+}

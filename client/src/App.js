@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Header from './components/Header.jsx'
+import Footer from './components/Footer.jsx'
 import ColleagueList from './components/ColleagueList.jsx'
 import './styles/App.css';
 
@@ -9,7 +10,7 @@ class App extends Component {
     super(props);
     this.state = {
       colleagues: []
-    }
+    };
     this.onSubmitClick = this.onSubmitClick.bind(this);
     this.onResetClick = this.onResetClick.bind(this);
     this.onStarClick = this.onStarClick.bind(this);
@@ -21,7 +22,7 @@ class App extends Component {
 
   // load a list of all colleagues from '/api/colleagues'
   fetchColleagues() {
-    var _this = this;
+    let _this = this;
     fetch('api/colleagues')
       .then((resp) => resp.json())
       .then(function (data) {
@@ -34,7 +35,7 @@ class App extends Component {
   }
 
   onSubmitClick() {
-    var reqArr = [];
+    let reqArr = [];
 
     this.state.colleagues.forEach((colleague, index) => {
       // only need to do something for the ones who have scores
@@ -46,7 +47,7 @@ class App extends Component {
           msg: "From Client!",
           toColleagueId: colleague.colleagueId,
           score: colleague.score
-        }
+        };
         reqArr.push(aRating);
         this.onResetClick(index);
       }
@@ -79,12 +80,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header onSubmitClick={this.onSubmitClick}/>
+        <Header/>
         <ColleagueList
           onResetClick={this.onResetClick}
           onStarClick={this.onStarClick}
           colleagues={this.state.colleagues}
         />
+        <Footer onSubmitClick={this.onSubmitClick}/>
       </div>
     );
   }

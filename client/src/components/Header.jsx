@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
 import './../styles/Header.css'
 
 class Header extends Component {
@@ -20,15 +19,6 @@ class Header extends Component {
           </Nav>
           <Nav>
             <NavItem eventKey={2} href="#">Add Colleague</NavItem>
-          </Nav>
-          <Nav pullRight>
-            <NavItem eventKey={3} href="#">
-              <Button
-                bsStyle="success"
-                onClick={() => this.props.onSubmitClick()}>
-                Submit
-              </Button>
-            </NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
