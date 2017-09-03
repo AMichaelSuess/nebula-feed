@@ -43,7 +43,7 @@ class App extends Component {
         console.log(`${JSON.stringify(colleague)}`);
 
         let aRating = {
-          fromColleagueId: "1234",
+          fromUserId: "1234",
           msg: "From Client!",
           toColleagueId: colleague.colleagueId,
           score: colleague.score

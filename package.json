@@ -21,6 +21,7 @@
   "homepage": "https://github.com/AMichaelSuess/nebula-feed#readme",
   "dependencies": {
     "express": "^4.15.4",
+    "mongoose": "^4.11.9",
     "react-scripts": "1.0.11"
   },
   "devDependencies": {

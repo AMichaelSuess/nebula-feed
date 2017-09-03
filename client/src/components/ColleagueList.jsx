@@ -9,9 +9,9 @@ class ColleagueList extends Component {
   render() {
     let charactersList = this.props.colleagues.map((colleague, index) => {
       return (
-        <tr key={colleague.userId}>
+        <tr key={colleague.colleagueId}>
           <td>
-            <img width={40} height={40} src={`${pictureURLConfig}&userId=${colleague.userId}`} alt=""/>
+            <img width={40} height={40} src={`${pictureURLConfig}&userId=${colleague.colleagueId}`} alt=""/>
           </td>
           <td>{colleague.name}</td>
           <td>{colleague.title}</td>
@@ -19,7 +19,7 @@ class ColleagueList extends Component {
           <td>
             <div style={{fontSize: 20}}>
               <StarRatingComponent
-                name={`rate-${colleague.userId}`}
+                name={`rate-${colleague.colleagueId}`}
                 starCount={5}
                 value={colleague.score}
                 onStarClick={(nextValue, prevValue, name) => this.props.onStarClick(nextValue, index)}
