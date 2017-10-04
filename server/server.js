@@ -5,24 +5,20 @@
 // - logging
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
-
-const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Priority serve any static files.
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+const passport = require('passport');
+const config = require('./config');
 
 // here goes the database initialization
-const mongoURL = process.env.MONGO_URI || 'mongodb://localhost/NebulaFeed';
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect(mongoURL, {useMongoClient: true})
+mongoose.connect(config.mongoURL, {useMongoClient: true})
   .then(
     () => {
       // Start the application after the database connection is ready
-      app.listen(PORT, function () {
-        console.log(`Listening on port ${PORT}`);
+      app.listen(config.PORT, function () {
+        console.log(`Listening on port ${config.PORT}`);
       });
     },
     err => {
@@ -30,45 +26,40 @@ mongoose.connect(mongoURL, {useMongoClient: true})
       console.error.bind(console, 'MongoDB connection error:');
     }
   );
-const db = mongoose.connection;
-const colleague = require('./models/colleague');
-const rating = require('./models/rating');
 
-// Return a list of colleagues
-app.get('/api/colleagues', function (req, res) {
-  res.set('Content-Type', 'application/json');
-  console.log(`GET: ${req.url}`);
+// load models
+require('./models/user');
 
-  // find all rows in colleagues collection and return the "public" fields
-  colleague.find({}, function (err, colleagues) {
-    res.send(colleagues);
-  }).select({"_id": 0, "__v": 0});
-});
+const app = express();
 
-// create many new rating entries
-app.post('/api/ratings/bulkInsert', function (req, res) {
-  req.addListener('data', function (message) {
-    let command = JSON.parse(message);
-    console.log(`POST: ${JSON.stringify(command)}`);
+// log requests to console using morgan-middleware
+const morgan = require('morgan');
+app.use(morgan('dev'));
 
-    command.forEach((sentRating, index) => {
-      let newRating = rating({
-        fromUserId: sentRating.fromUserId,
-        msg: sentRating.msg,
-        toColleagueId: sentRating.toColleagueId,
-        score: sentRating.score
-      });
-      newRating.save(function (err) {
-        if (err) throw err;
+// Priority serve any static files.
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-        console.log('Rating created!');
-      });
-    });
+// parse application/json-bodies
+app.use(bodyParser.json());
 
-    // TODO: this location is fake and needs to be adapted to show all created ratings!
-    res.status("201").location("/api/ratings/:123").send("Created!");
-  });
-});
+// pass the passport middleware
+app.use(passport.initialize());
+
+// load passport strategies
+const localSignupStrategy = require('./passport/local-signup');
+const localLoginStrategy = require('./passport/local-login');
+passport.use('local-signup', localSignupStrategy);
+passport.use('local-login', localLoginStrategy);
+
+// pass the authentication checker middleware
+const authCheckMiddleware = require('./middleware/auth-check');
+app.use('/api', authCheckMiddleware);
+
+// and our routes
+const authRoutes = require('./routes/auth');
+const apiRoutes = require('./routes/api');
+app.use('/auth', authRoutes);
+app.use('/api', apiRoutes);
 
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function (request, response) {

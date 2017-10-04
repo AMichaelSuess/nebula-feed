@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import './../styles/Header.css'
 
 class Header extends Component {
@@ -14,11 +15,10 @@ class Header extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
-            <NavItem eventKey={1} href="#">Appreciate</NavItem>
-          </Nav>
-          <Nav>
-            <NavItem eventKey={2} href="#">Add Colleague</NavItem>
+          <Nav pullRight>
+            <LinkContainer to="/logout">
+              <NavItem>Log Out</NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

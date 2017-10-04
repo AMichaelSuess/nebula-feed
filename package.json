@@ -20,9 +20,16 @@
   },
   "homepage": "https://github.com/AMichaelSuess/nebula-feed#readme",
   "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
     "express": "^4.15.4",
+    "jsonwebtoken": "^8.0.1",
     "mongoose": "^4.11.9",
-    "react-scripts": "1.0.11"
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "react-scripts": "1.0.11",
+    "validator": "^9.0.0"
   },
   "devDependencies": {
     "concurrently": "^3.5.0"
