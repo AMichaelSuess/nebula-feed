@@ -10,7 +10,8 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      colleagues: []
+      colleagues: [],
+      user: {}
     };
     this.submitRating = this.submitRating.bind(this);
     this.resetRating = this.resetRating.bind(this);
@@ -18,11 +19,14 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    this.fetchColleagues();
+    this.getColleagues();
+    this.getCurrentUser();
   }
 
-  // load a list of all colleagues from '/api/colleagues'
-  fetchColleagues() {
+  /**
+   * GET a list of all colleagues from '/api/colleagues' and put them into this.state
+   */
+  getColleagues() {
     let _this = this;
     fetch('api/colleagues', {
       method: 'GET',
@@ -35,6 +39,29 @@ class Main extends Component {
       .then((resp) => resp.json())
       .then(function (data) {
         _this.setState({colleagues: data});
+      })
+      .catch(function (error) {
+        // TODO: real error logging
+        console.log(error);
+      });
+  }
+
+  /**
+   * GET information about currently logged in user - and put it into this.state
+   */
+  getCurrentUser() {
+    let _this = this;
+    fetch('api/users/me', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `bearer ${Auth.getToken()}`
+      }
+    })
+      .then((resp) => resp.json())
+      .then(function (data) {
+        _this.setState({user: data});
       })
       .catch(function (error) {
         // TODO: real error logging
@@ -95,7 +122,10 @@ class Main extends Component {
           onStarClick={this.changeRating}
           colleagues={this.state.colleagues}
         />
-        <Footer onSubmitClick={this.submitRating}/>
+        <Footer
+          user={this.state.user}
+          onSubmitClick={this.submitRating}
+        />
       </div>
     );
   }

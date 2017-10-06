@@ -8,14 +8,16 @@ const userSchema = new mongoose.Schema({
     index: { unique: true }
   },
   password: String,
-  name: String
+  name: String,
+  starsToGive: Number
 });
 
 
 /**
  * Compare the passed password with the value in the database. A model method.
  *
- * @param {string} password
+ * @param {string} password The password to compare
+ * @param {callback} callback The callback to use
  * @returns {object} callback
  */
 userSchema.methods.comparePassword = function comparePassword(password, callback) {

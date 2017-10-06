@@ -8,7 +8,8 @@ class Footer extends Component {
     return (
       <Navbar fixedBottom>
         <Navbar.Text pullLeft>
-          You have 4 <Glyphicon glyph="star"/> left to give, choose wisely!
+          Dear <em>{this.props.user.name}</em>, you have {this.props.user.starsToGive} <Glyphicon
+          glyph="star"/> left to give, choose wisely!
         </Navbar.Text>
         <Nav pullRight>
           <NavItem>

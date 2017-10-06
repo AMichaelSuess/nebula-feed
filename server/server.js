@@ -23,7 +23,7 @@ mongoose.connect(config.mongoURL, {useMongoClient: true})
     },
     err => {
       /** handle initial connection error */
-      console.error.bind(console, 'MongoDB connection error:');
+      console.error.bind(console, `MongoDB connection error: ${err}`);
     }
   );
 
@@ -53,7 +53,7 @@ passport.use('local-login', localLoginStrategy);
 
 // pass the authentication checker middleware
 const authCheckMiddleware = require('./middleware/auth-check');
-app.use('/api', authCheckMiddleware);
+app.use('/api', authCheckMiddleware.checkAuthFromAuthHeader);
 
 // and our routes
 const authRoutes = require('./routes/auth');
