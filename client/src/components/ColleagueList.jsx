@@ -1,22 +1,26 @@
 import React, {Component} from 'react';
-import { Table, Button } from 'react-bootstrap';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import FlatButton from 'material-ui/FlatButton';
 import StarRatingComponent from 'react-star-rating-component';
 import './../styles/ColleagueList.css'
-import { pictureURLConfig } from './../config.json';
 
 class ColleagueList extends Component {
 
   render() {
     let charactersList = this.props.colleagues.map((colleague, index) => {
       return (
-        <tr key={colleague.colleagueId}>
-          <td>
-            <img width={40} height={40} src={`${pictureURLConfig}&userId=${colleague.colleagueId}`} alt=""/>
-          </td>
-          <td>{colleague.name}</td>
-          <td>{colleague.title}</td>
-          <td>{colleague.team}</td>
-          <td>
+        <TableRow key={colleague.colleagueId}>
+          <TableRowColumn>{colleague.name}</TableRowColumn>
+          <TableRowColumn>{colleague.title}</TableRowColumn>
+          <TableRowColumn>{colleague.team}</TableRowColumn>
+          <TableRowColumn>
             <div style={{fontSize: 20}}>
               <StarRatingComponent
                 name={`rate-${colleague.colleagueId}`}
@@ -25,32 +29,42 @@ class ColleagueList extends Component {
                 onStarClick={(nextValue, prevValue, name) => this.props.onStarClick(nextValue, index)}
               />
             </div>
-          </td>
-          <td>
-            <Button bsStyle="warning" bsSize="small" onClick={() => this.props.onResetClick(index)}>Reset</Button>
-          </td>
-        </tr>
+          </TableRowColumn>
+          <TableRowColumn>
+            <FlatButton
+              primary={true}
+              onClick={() => this.props.onResetClick(index)}>Reset
+            </FlatButton>
+          </TableRowColumn>
+        </TableRow>
       );
     });
 
     return (
-      <div className='container'>
-        <Table striped bordered responsive hover>
-          <thead>
-            <tr>
-              <td>Image</td>
-              <td>Name</td>
-              <td>Title</td>
-              <td>Team</td>
-              <td>Rate!</td>
-              <td>Reset!</td>
-            </tr>
-          </thead>
-          <tbody>
+        <Table
+          fixedHeader={true}
+          selectable={false}
+        >
+          <TableHeader
+            displaySelectAll={false}
+            adjustForCheckbox={false}
+            enableSelectAll={false}
+          >
+            <TableRow>
+              <TableHeaderColumn>Name</TableHeaderColumn>
+              <TableHeaderColumn>Title</TableHeaderColumn>
+              <TableHeaderColumn>Team</TableHeaderColumn>
+              <TableHeaderColumn>Rate!</TableHeaderColumn>
+              <TableHeaderColumn>Reset!</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody
+            displayRowCheckbox={false}
+            stripedRows={true}
+          >
             {charactersList}
-          </tbody>
+          </TableBody>
         </Table>
-      </div>
     );
   }
 }

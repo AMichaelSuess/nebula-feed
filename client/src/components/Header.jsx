@@ -1,27 +1,20 @@
 import React, {Component} from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import FlatButton from 'material-ui/FlatButton';
+import AppBar from 'material-ui/AppBar';
 import './../styles/Header.css'
 
 class Header extends Component {
 
   render() {
     return (
-      <Navbar collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand>
-            NebulaFeed
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
-            <LinkContainer to="/logout">
-              <NavItem>Log Out</NavItem>
-            </LinkContainer>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <AppBar className={'main-header-appbar'}
+              title={"NebulaFeed"}
+              iconElementRight={<FlatButton
+                label="Log Out"
+                href="/logout"
+                primary={true}
+              />}
+      />
     );
   }
 }

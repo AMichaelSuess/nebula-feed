@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import LogInForm from './components/LogInForm.jsx';
 import Auth from './modules/Auth';
 
@@ -32,7 +31,7 @@ class LogIn extends React.Component {
     this.changeUser = this.changeUser.bind(this);
   }
 
-  componentWillMount () {
+  componentWillMount() {
     // if the user is returning to this page AND still logged in: push him to main application!
     if (Auth.isUserAuthenticated()) {
       this.context.router.history.push('/main');
@@ -111,15 +110,13 @@ class LogIn extends React.Component {
    */
   render() {
     return (
-      <MuiThemeProvider>
-        <LogInForm
-          onSubmit={this.logInUser}
-          onChange={this.changeUser}
-          errors={this.state.errors}
-          successMessage={this.state.successMessage}
-          user={this.state.user}
-        />
-      </MuiThemeProvider>
+      <LogInForm
+        onSubmit={this.logInUser}
+        onChange={this.changeUser}
+        errors={this.state.errors}
+        successMessage={this.state.successMessage}
+        user={this.state.user}
+      />
     );
   }
 

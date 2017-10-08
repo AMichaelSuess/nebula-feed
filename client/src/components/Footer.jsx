@@ -1,27 +1,26 @@
 import React, {Component} from 'react';
-import {Button, Navbar, Nav, NavItem, Glyphicon} from 'react-bootstrap';
+import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
+import RaisedButton from 'material-ui/RaisedButton';
+import ToggleStar from 'material-ui/svg-icons/toggle/star';
 import './../styles/Footer.css'
 
 class Footer extends Component {
 
   render() {
     return (
-      <Navbar fixedBottom>
-        <Navbar.Text pullLeft>
-          Dear <em>{this.props.user.name}</em>, you have {this.props.user.starsToGive} <Glyphicon
-          glyph="star"/> left to give, choose wisely!
-        </Navbar.Text>
-        <Nav pullRight>
-          <NavItem>
-            <Button
-              bsStyle="success"
-              bsSize="small"
-              onClick={() => this.props.onSubmitClick()}>
-              Submit
-            </Button>
-          </NavItem>
-        </Nav>
-      </Navbar>
+      <Toolbar>
+        <ToolbarGroup firstChild={true}>
+          <span
+            className={"main-footer-text"}>Dear <em>{this.props.user.name}</em>,
+            you have {this.props.user.starsToGive} <ToggleStar/> left to give, choose wisely!</span>
+        </ToolbarGroup>
+        <ToolbarGroup>
+          <RaisedButton
+            onClick={() => this.props.onSubmitClick()}
+            label="Submit"
+            secondary={true}/>
+        </ToolbarGroup>
+      </Toolbar>
     );
   }
 }

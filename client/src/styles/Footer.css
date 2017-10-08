@@ -1,4 +1,5 @@
-.navbar-default .navbar-text {
-    font-size: 18px;
-    font-weight: 500;
+.main-footer-text {
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 20px;
 }
