@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import ColleagueList from './components/ColleagueList.jsx'
+import Snackbar from 'material-ui/Snackbar';
 import Auth from './modules/Auth';
 import './styles/Main.css';
 
@@ -11,8 +12,12 @@ class Main extends Component {
     super(props);
     this.state = {
       colleagues: [],
-      user: {}
+      user: {},
+      submitMsg: '',
+      serverMsgDisplayed: false,
+      serverMsg: ''
     };
+    this.changeSubmitMsg = this.changeSubmitMsg.bind(this);
     this.submitRating = this.submitRating.bind(this);
     this.resetRating = this.resetRating.bind(this);
     this.changeRating = this.changeRating.bind(this);
@@ -69,6 +74,12 @@ class Main extends Component {
       });
   }
 
+  changeSubmitMsg(newMsg) {
+    this.setState({
+      submitMsg: newMsg
+    });
+  }
+
   submitRating() {
     let reqArr = [];
 
@@ -79,7 +90,7 @@ class Main extends Component {
 
         let aRating = {
           fromUserId: "1234",
-          msg: "From Client!",
+          msg: this.state.submitMsg,
           toColleagueId: colleague.colleagueId,
           score: colleague.score
         };
@@ -96,8 +107,28 @@ class Main extends Component {
         'Authorization': `bearer ${Auth.getToken()}`
       },
       body: JSON.stringify(reqArr)
-    });
+    })
+      .then(response => response.json())
+      .then((responseJson) => {
+        if (responseJson.success) {
+          this.setState({
+            serverMsgDisplayed: true,
+            serverMsg: responseJson.message
+          });
+        } else {
+          // TODO: real error logging
+          console.log("Could not submit rating :-(")
+        }
+      });
+    // in any case: don't forget to reset the submitMessage!
+    this.changeSubmitMsg("");
   }
+
+  onSnackBarClose = () => {
+    this.setState({
+      serverMsgDisplayed: false,
+    });
+  };
 
   resetRating(index) {
     let colleagues = this.state.colleagues;
@@ -125,6 +156,13 @@ class Main extends Component {
         <Footer
           user={this.state.user}
           onSubmitClick={this.submitRating}
+          onSubmitMsgChanged={this.changeSubmitMsg}
+        />
+        <Snackbar
+          open={this.state.serverMsgDisplayed}
+          message={this.state.serverMsg}
+          autoHideDuration={4000}
+          onRequestClose={this.onSnackBarClose}
         />
       </div>
     );

@@ -41,30 +41,30 @@ class ColleagueList extends Component {
     });
 
     return (
-        <Table
-          fixedHeader={true}
-          selectable={false}
+      <Table
+        fixedHeader={true}
+        selectable={false}
+      >
+        <TableHeader
+          displaySelectAll={false}
+          adjustForCheckbox={false}
+          enableSelectAll={false}
         >
-          <TableHeader
-            displaySelectAll={false}
-            adjustForCheckbox={false}
-            enableSelectAll={false}
-          >
-            <TableRow>
-              <TableHeaderColumn>Name</TableHeaderColumn>
-              <TableHeaderColumn>Title</TableHeaderColumn>
-              <TableHeaderColumn>Team</TableHeaderColumn>
-              <TableHeaderColumn>Rate!</TableHeaderColumn>
-              <TableHeaderColumn>Reset!</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody
-            displayRowCheckbox={false}
-            stripedRows={true}
-          >
-            {charactersList}
-          </TableBody>
-        </Table>
+          <TableRow>
+            <TableHeaderColumn>Name</TableHeaderColumn>
+            <TableHeaderColumn>Title</TableHeaderColumn>
+            <TableHeaderColumn>Team</TableHeaderColumn>
+            <TableHeaderColumn>Rate!</TableHeaderColumn>
+            <TableHeaderColumn>Reset!</TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody
+          displayRowCheckbox={false}
+          stripedRows={true}
+        >
+          {charactersList}
+        </TableBody>
+      </Table>
     );
   }
 }

@@ -56,7 +56,6 @@ class LogIn extends React.Component {
       },
       body: JSON.stringify(this.state.user)
     })
-    // first convert the response to json-format
       .then(response => response.json())
       .then((responseJson) => {
         if (responseJson.success) {

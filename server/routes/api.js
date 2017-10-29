@@ -39,7 +39,10 @@ router.post('/ratings/bulkInsert', function (req, res) {
   });
 
   // TODO: this location is fake and needs to be adapted to show all created ratings!
-  res.status("201").location("/api/ratings/:123").send("Created!");
+  res.status(201).location("/api/ratings/:123").json({
+    success: true,
+    message: "Thanks for rating!"
+  });
 });
 
 /**
