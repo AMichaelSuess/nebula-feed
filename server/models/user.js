@@ -9,6 +9,10 @@ const userSchema = new mongoose.Schema({
   },
   password: String,
   name: String,
+  userId: String,
+  title: String,
+  team: String,
+  rights: [String],
   starsToGive: Number
 });
 

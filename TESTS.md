@@ -27,9 +27,9 @@
 
 ## Main-view
 * check correct data are visible: success
-* add rating for a colleague: success
-* add rating for another colleague: success
-* press `Reset` for first colleague: success
-* add rating for a third colleague: success
+* add rating for a user: success
+* add rating for another user: success
+* press `Reset` for first user: success
+* add rating for a third user: success
 * press `Submit`: success + rating disappears
 * when logged in and accessing the root url: show main view

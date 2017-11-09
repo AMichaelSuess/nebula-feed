@@ -31,6 +31,21 @@ function validateSignUpForm(payload) {
     errors.name = 'Please provide your name.';
   }
 
+  if (!payload || typeof payload.userId !== 'string' || payload.userId.trim().length === 0) {
+    isFormValid = false;
+    errors.userId = 'Please provide a valid ID for your user (e.g. your employee number).';
+  }
+
+  if (!payload || typeof payload.title !== 'string' || payload.title.trim().length === 0) {
+    isFormValid = false;
+    errors.title = 'Please provide your title.';
+  }
+
+  if (!payload || typeof payload.team !== 'string' || payload.team.trim().length === 0) {
+    isFormValid = false;
+    errors.team = 'Please provide the name of your team.';
+  }
+
   if (!isFormValid) {
     message = 'Check the form for errors.';
   }

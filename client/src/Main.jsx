@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
-import ColleagueList from './components/ColleagueList.jsx'
+import UserListForRating from './components/UserListForRating.jsx'
 import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Auth from './modules/Auth';
@@ -14,7 +14,7 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      colleagues: [],
+      users: [],
       user: {},
       submitMsg: '',
       serverMsgDisplayed: false,
@@ -31,16 +31,17 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    this.getColleagues();
-    this.getCurrentUser();
+    this.getCurrentUserAndUsers();
   }
 
   /**
-   * GET a list of all colleagues from '/api/colleagues' and put them into this.state
+   * GET a list of all users from '/api/users' which can be rated and put them into this.state.
+   *
+   * Include only users that can be rated. Exclude your own user.
    */
-  getColleagues() {
+  getUsers() {
     let _this = this;
-    fetch('api/colleagues', {
+    fetch(`api/users?rights-inc=canBeRated&userId-ne=${this.state.user.userId}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -50,7 +51,7 @@ class Main extends Component {
     })
       .then((resp) => resp.json())
       .then(function (data) {
-        _this.setState({colleagues: data});
+        _this.setState({users: data});
       })
       .catch(function (error) {
         // TODO: real error logging
@@ -61,7 +62,7 @@ class Main extends Component {
   /**
    * GET information about currently logged in user - and put it into this.state
    */
-  getCurrentUser() {
+  getCurrentUserAndUsers() {
     let _this = this;
     fetch('api/users/me', {
       method: 'GET',
@@ -74,6 +75,8 @@ class Main extends Component {
       .then((resp) => resp.json())
       .then(function (data) {
         _this.setState({user: data});
+        // we have to wait for the result, as we don't want to see our own user in the rating list
+        _this.getUsers();
       })
       .catch(function (error) {
         // TODO: real error logging
@@ -90,16 +93,16 @@ class Main extends Component {
   submitRating() {
     let reqArr = [];
 
-    this.state.colleagues.forEach((colleague, index) => {
+    this.state.users.forEach((user, index) => {
       // only need to do something for the ones who have scores
-      if (colleague.score > 0 && colleague.score < 6) {
-        console.log(`${JSON.stringify(colleague)}`);
+      if (user.score > 0 && user.score < 6) {
+        console.log(`${JSON.stringify(user)}`);
 
         let aRating = {
-          fromUserId: "1234",
+          fromUserId: this.state.user.userId,
           msg: this.state.submitMsg,
-          toColleagueId: colleague.colleagueId,
-          score: colleague.score
+          toUserId: user.userId,
+          score: user.score
         };
         reqArr.push(aRating);
         this.resetRating(index);
@@ -138,17 +141,17 @@ class Main extends Component {
   };
 
   resetRating(index) {
-    let colleagues = this.state.colleagues;
+    let users = this.state.users;
 
-    colleagues[index].score = 0;
-    this.setState({colleagues: colleagues});
+    users[index].score = 0;
+    this.setState({users: users});
   }
 
   changeRating(nextValue, index) {
-    let colleagues = this.state.colleagues;
+    let users = this.state.users;
 
-    colleagues[index].score = nextValue;
-    this.setState({colleagues: colleagues});
+    users[index].score = nextValue;
+    this.setState({users: users});
   }
 
   openConfirmDialog() {
@@ -164,9 +167,9 @@ class Main extends Component {
     this.submitRating();
   }
 
-  getNumRatedColleagues() {
-    return this.state.colleagues.reduce(
-      (total, colleague) => ((colleague.score > 0 && colleague.score < 6) ? total + 1 : total), 0);
+  getNumRatedUsers() {
+    return this.state.users.reduce(
+      (total, users) => ((users.score > 0 && users.score < 6) ? total + 1 : total), 0);
   }
 
   render() {
@@ -183,22 +186,22 @@ class Main extends Component {
       />,
     ];
 
-    // how many rated colleagues do we have (needed for confirmDialog)
-    const numRatedColleagues = this.getNumRatedColleagues();
-    const ratedColleagues = (numRatedColleagues > 1) ?
-      `${numRatedColleagues} people` : `${numRatedColleagues} person`;
+    // how many rated users do we have (needed for confirmDialog)
+    const numRatedUsers = this.getNumRatedUsers();
+    const ratedUsers = (numRatedUsers > 1) ?
+      `${numRatedUsers} people` : `${numRatedUsers} person`;
 
     return (
       <div className="Main">
         <Header/>
-        <ColleagueList
+        <UserListForRating
           onResetClick={this.resetRating}
           onStarClick={this.changeRating}
-          colleagues={this.state.colleagues}
+          users={this.state.users}
         />
         <Footer
           user={this.state.user}
-          submitDisabled={this.getNumRatedColleagues() === 0}
+          submitDisabled={this.getNumRatedUsers() === 0}
           onSubmitClicked={this.openConfirmDialog}
         />
         <Snackbar
@@ -208,7 +211,7 @@ class Main extends Component {
           onRequestClose={this.closeServerMsg}
         />
         <Dialog
-          title={`You are about to grant stars to ${ratedColleagues}!`}
+          title={`You are about to grant stars to ${ratedUsers}!`}
           actions={actions}
           modal={true}
           open={this.state.confirmDialogOpen}

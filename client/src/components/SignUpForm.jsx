@@ -50,6 +50,36 @@ const SignUpForm = ({
         />
       </div>
 
+      <div className="field-line">
+        <TextField
+          floatingLabelText="User-ID"
+          name="userId"
+          errorText={errors.userId}
+          onChange={onChange}
+          value={user.userId}
+        />
+      </div>
+
+      <div className="field-line">
+        <TextField
+          floatingLabelText="Title"
+          name="title"
+          errorText={errors.title}
+          onChange={onChange}
+          value={user.title}
+        />
+      </div>
+
+      <div className="field-line">
+        <TextField
+          floatingLabelText="Team"
+          name="team"
+          errorText={errors.team}
+          onChange={onChange}
+          value={user.team}
+        />
+      </div>
+
       <div className="button-line">
         <RaisedButton type="submit" label="Create New Account" primary />
       </div>

@@ -9,23 +9,23 @@ import {
 } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import StarRatingComponent from 'react-star-rating-component';
-import './../styles/ColleagueList.css'
+import '../styles/UserListForRating.css'
 
-class ColleagueList extends Component {
+class UserListForRating extends Component {
 
   render() {
-    let charactersList = this.props.colleagues.map((colleague, index) => {
+    let usersList = this.props.users.map((user, index) => {
       return (
-        <TableRow key={colleague.colleagueId}>
-          <TableRowColumn>{colleague.name}</TableRowColumn>
-          <TableRowColumn>{colleague.title}</TableRowColumn>
-          <TableRowColumn>{colleague.team}</TableRowColumn>
+        <TableRow key={user.userId}>
+          <TableRowColumn>{user.name}</TableRowColumn>
+          <TableRowColumn>{user.title}</TableRowColumn>
+          <TableRowColumn>{user.team}</TableRowColumn>
           <TableRowColumn>
             <div style={{fontSize: 20}}>
               <StarRatingComponent
-                name={`rate-${colleague.colleagueId}`}
+                name={`rate-${user.userId}`}
                 starCount={5}
-                value={colleague.score}
+                value={user.score}
                 onStarClick={(nextValue, prevValue, name) => this.props.onStarClick(nextValue, index)}
               />
             </div>
@@ -62,11 +62,11 @@ class ColleagueList extends Component {
           displayRowCheckbox={false}
           stripedRows={true}
         >
-          {charactersList}
+          {usersList}
         </TableBody>
       </Table>
     );
   }
 }
 
-export default ColleagueList;
+export default UserListForRating;
