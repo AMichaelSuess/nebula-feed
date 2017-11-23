@@ -22,3 +22,15 @@ body {
     /* needed for content to not overlap with footer */
     padding-bottom: 50px;
 }
+
+.error-message {
+  padding: 0 16px;
+  color: tomato;
+  text-align: center;
+}
+
+.success-message {
+  padding: 0 16px;
+  color: green;
+  text-align: center;
+}

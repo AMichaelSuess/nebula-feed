@@ -26,6 +26,7 @@ class UserListForRating extends Component {
                 name={`rate-${user.userId}`}
                 starCount={5}
                 value={user.score}
+                editing={this.props.ratingsEnabled}
                 onStarClick={(nextValue, prevValue, name) => this.props.onStarClick(nextValue, index)}
               />
             </div>

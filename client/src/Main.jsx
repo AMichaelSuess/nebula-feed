@@ -17,9 +17,10 @@ class Main extends Component {
       users: [],
       user: {},
       submitMsg: '',
-      serverMsgDisplayed: false,
-      serverMsg: '',
-      confirmDialogOpen: false
+      serverSuccessMsgDisplayed: false,
+      serverSuccessMsg: '',
+      confirmDialogOpen: false,
+      warningMsg: ''
     };
     this.changeSubmitMsg = this.changeSubmitMsg.bind(this);
     this.submitRating = this.submitRating.bind(this);
@@ -76,6 +77,15 @@ class Main extends Component {
       .then(function (data) {
         _this.setState({user: data});
         // we have to wait for the result, as we don't want to see our own user in the rating list
+
+        // put up warning message in case we don't have rights to rate
+        if (!data.rights.includes("canRate")) {
+          _this.setState({
+            warningMsg: "You are not allowed to rate, please contact your friendly" +
+            " admin if you think this is a mistake!"
+          });
+        }
+
         _this.getUsers();
       })
       .catch(function (error) {
@@ -122,8 +132,8 @@ class Main extends Component {
       .then((responseJson) => {
         if (responseJson.success) {
           this.setState({
-            serverMsgDisplayed: true,
-            serverMsg: responseJson.message
+            serverSuccessMsgDisplayed: true,
+            serverSuccessMsg: responseJson.message
           });
         } else {
           // TODO: real error logging
@@ -136,7 +146,7 @@ class Main extends Component {
 
   closeServerMsg = () => {
     this.setState({
-      serverMsgDisplayed: false,
+      serverSuccessMsgDisplayed: false,
     });
   };
 
@@ -194,9 +204,14 @@ class Main extends Component {
     return (
       <div className="Main">
         <Header/>
+
+        {this.state.warningMsg && <p className="error-message">{this.state.warningMsg}</p>}
+
         <UserListForRating
           onResetClick={this.resetRating}
           onStarClick={this.changeRating}
+          ratingsEnabled={typeof this.state.user.rights !== 'undefined'
+          && this.state.user.rights.includes("canRate")}
           users={this.state.users}
         />
         <Footer
@@ -205,8 +220,8 @@ class Main extends Component {
           onSubmitClicked={this.openConfirmDialog}
         />
         <Snackbar
-          open={this.state.serverMsgDisplayed}
-          message={this.state.serverMsg}
+          open={this.state.serverSuccessMsgDisplayed}
+          message={this.state.serverSuccessMsg}
           autoHideDuration={4000}
           onRequestClose={this.closeServerMsg}
         />
